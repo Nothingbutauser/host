@@ -1,1 +1,128 @@
-<iframe src="https://1drv.ms/p/c/f4938a89d8870743/IQRL05tb9CdhRYRCaFiKdUnCAVxPzWuLJC75VHSFC0zX4ew?em=2&amp;wdAr=1.7777777777777777&amp;wdEaaCheck=1" width="1920px" height="1080px" frameborder="0">포함된 <a target="_blank" href="https://office.com">Microsoft Office</a> 프레젠테이션, 제공: <a target="_blank" href="https://office.com/webapps">Office</a></iframe>
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>리소스팩 설치 프로그램 — Windows 전용</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#071025;
+    --card:rgba(255,255,255,0.03);
+    --glass:rgba(255,255,255,0.04);
+    --accent:#7ee7b8;
+    --accent2:#7dd3fc;
+    --muted:#9fb0c4;
+    --radius:14px;
+    font-family: "Pretendard", system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  }
+  html,body{height:100%;background:
+    radial-gradient(800px 300px at 10% 10%, rgba(125,211,252,0.04), transparent),
+    linear-gradient(180deg,#071025 0%, #03111a 100%);
+    color:#e6f1fb; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:800px;margin:36px auto;padding:24px}
+  .intro{
+    display:flex;gap:20px;align-items:center;padding:24px;border-radius:18px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid var(--glass); box-shadow:0 14px 40px rgba(2,7,20,0.6);
+    transform: translateY(24px); opacity:0; animation:introIn 700ms cubic-bezier(.2,.9,.3,1) forwards;
+  }
+  @keyframes introIn{ to{ transform:translateY(0); opacity:1 } }
+  .logo{width:120px;height:120px;border-radius:14px;flex:0 0 120px; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#002528; font-weight:800; font-size:18px; box-shadow:0 10px 30px rgba(45,120,110,0.12);}
+  .hero-txt{flex:1}
+  .title{font-size:1.6rem;font-weight:800;margin-bottom:6px}
+  .desc{color:var(--muted);line-height:1.6}
+
+  .card{background:var(--card);padding:16px;border-radius:14px;border:1px solid var(--glass); box-shadow:0 8px 30px rgba(3,6,20,0.35); margin-top:18px;}
+
+  .download-btn{
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    color: #052023;
+    text-decoration: none;
+    transition: transform 150ms;
+    margin-bottom: 16px; /* 버튼 아래 여백 추가 */
+    display:inline-block;
+  }
+  .download-btn:hover{transform:translateY(-4px)}
+
+  .verifier{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+  .file-input{display:flex;gap:8px;align-items:center}
+  input[type=file]{padding:8px;border-radius:10px;background:transparent;border:1px dashed rgba(255,255,255,0.03); color:var(--muted)}
+  .verify-btn{padding:8px 10px;border-radius:10px;border:none;cursor:pointer;background:transparent;color:var(--accent2);border:1px solid rgba(125,211,252,0.12)}
+  .result{padding:10px;border-radius:10px;background:rgba(255,255,255,0.02);color:var(--muted); margin-top:8px;}
+  footer{margin-top:16px;color:var(--muted);text-align:center;font-size:.9rem}
+</style>
+</head>
+<body>
+  <div class="wrap" role="main">
+    <div class="intro" aria-labelledby="title">
+      <div class="logo" aria-hidden="true">RP<br>Installer</div>
+      <div class="hero-txt">
+        <div id="title" class="title">리소스팩 설치 프로그램 — Windows 전용</div>
+        <div class="desc">
+          이 프로그램은 Windows 환경에서 Minecraft 리소스팩을 쉽게 설치해 줍니다.
+          아래 버튼을 클릭하면 설치 파일(.exe)을 다운로드할 수 있으며, SHA-256 체크섬을 통해 파일 무결성을 확인할 수 있습니다.
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>다운로드</h2>
+      <a class="download-btn" id="dl-win" href="https://github.com/Nothingbutauser/host/releases/download/resourcepack-installerV1.0/ResourcePackInstaller.exe" download>
+        Windows 설치 프로그램 다운로드 (.exe)
+      </a>
+      <div style="margin-top:12px;color:var(--muted);">
+        SHA256 체크섬: <code id="sha-win">확인 필요</code>
+      </div>
+    </div>
+
+    <div class="card verifier">
+      <h3>무결성 확인</h3>
+      <div class="small">다운로드한 파일을 선택하면 브라우저에서 SHA-256을 계산해 위 체크섬과 비교합니다.</div>
+      <div class="file-input">
+        <input id="file" type="file" aria-label="다운로드한 설치 프로그램 선택" />
+        <button id="verify" class="verify-btn">검사</button>
+      </div>
+      <div id="result" class="result small" aria-live="polite">파일을 선택하고 '검사'를 눌러 주세요.</div>
+    </div>
+
+    <footer>
+      배포자: 리소스팩 팀 • Windows 전용 설치 프로그램 다운로드 페이지
+    </footer>
+  </div>
+
+<script>
+  async function sha256OfFile(file){
+    const buf = await file.arrayBuffer();
+    const hashBuffer = await crypto.subtle.digest('SHA-256', buf);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2,'0')).join('');
+  }
+
+  document.getElementById('verify').addEventListener('click', async () => {
+    const input = document.getElementById('file');
+    const res = document.getElementById('result');
+    if(!input.files || input.files.length === 0){
+      res.textContent = '파일을 먼저 선택해 주세요.';
+      return;
+    }
+    const file = input.files[0];
+    res.textContent = '해시 계산 중... (파일 크기: ' + Math.round(file.size/1024) + ' KB)';
+    try{
+      const hex = await sha256OfFile(file);
+      res.innerHTML = '<strong>계산 완료:</strong> ' + hex;
+      document.getElementById('sha-win').textContent = hex;
+    }catch(e){
+      console.error(e);
+      res.textContent = '해시 계산 중 오류가 발생했습니다.';
+    }
+  });
+</script>
+</body>
+</html>
