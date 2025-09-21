@@ -14,12 +14,15 @@
     --accent2:#7dd3fc;
     --muted:#9fb0c4;
     --radius:14px;
-    font-family: "Pretendard", system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    font-family:"Pretendard",system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
   }
-  html,body{height:100%;background:
-    radial-gradient(800px 300px at 10% 10%, rgba(125,211,252,0.04), transparent),
-    linear-gradient(180deg,#071025 0%, #03111a 100%);
-    color:#e6f1fb; -webkit-font-smoothing:antialiased;}
+  html,body{
+    height:100%;
+    background:
+      radial-gradient(800px 300px at 10% 10%, rgba(125,211,252,0.04), transparent),
+      linear-gradient(180deg,#071025 0%, #03111a 100%);
+    color:#e6f1fb; -webkit-font-smoothing:antialiased;
+  }
   .wrap{max-width:800px;margin:36px auto;padding:24px}
   .intro{
     display:flex;gap:20px;align-items:center;padding:24px;border-radius:18px;
@@ -28,35 +31,79 @@
     transform: translateY(24px); opacity:0; animation:introIn 700ms cubic-bezier(.2,.9,.3,1) forwards;
   }
   @keyframes introIn{ to{ transform:translateY(0); opacity:1 } }
-  .logo{width:120px;height:120px;border-radius:14px;flex:0 0 120px; display:flex; align-items:center; justify-content:center;
-    background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#002528; font-weight:800; font-size:18px; box-shadow:0 10px 30px rgba(45,120,110,0.12);}
+  .logo{
+    width:120px;height:120px;border-radius:14px;flex:0 0 120px; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#002528; font-weight:800; font-size:18px; box-shadow:0 10px 30px rgba(45,120,110,0.12);
+  }
   .hero-txt{flex:1}
   .title{font-size:1.6rem;font-weight:800;margin-bottom:6px}
   .desc{color:var(--muted);line-height:1.6}
 
-  .card{background:var(--card);padding:16px;border-radius:14px;border:1px solid var(--glass); box-shadow:0 8px 30px rgba(3,6,20,0.35); margin-top:18px;}
-
+  .card{
+    background:var(--card);padding:16px;border-radius:14px;border:1px solid var(--glass);
+    box-shadow:0 8px 30px rgba(3,6,20,0.35); margin-top:18px;
+  }
   .download-btn{
-    padding: 10px 14px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    font-weight: 700;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    color: #052023;
-    text-decoration: none;
-    transition: transform 150ms;
-    margin-bottom: 16px; /* 버튼 아래 여백 추가 */
-    display:inline-block;
+    padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:700;
+    background:linear-gradient(90deg, var(--accent), var(--accent2));
+    color:#052023;text-decoration:none;transition:transform 150ms;margin-bottom:16px;display:inline-block;
   }
   .download-btn:hover{transform:translateY(-4px)}
-
   .verifier{display:flex;flex-direction:column;gap:10px;margin-top:12px}
   .file-input{display:flex;gap:8px;align-items:center}
   input[type=file]{padding:8px;border-radius:10px;background:transparent;border:1px dashed rgba(255,255,255,0.03); color:var(--muted)}
   .verify-btn{padding:8px 10px;border-radius:10px;border:none;cursor:pointer;background:transparent;color:var(--accent2);border:1px solid rgba(125,211,252,0.12)}
   .result{padding:10px;border-radius:10px;background:rgba(255,255,255,0.02);color:var(--muted); margin-top:8px;}
   footer{margin-top:16px;color:var(--muted);text-align:center;font-size:.9rem}
+
+  /* ===== 다운로드 상단 반원 이펙트 ===== */
+  .download-effect {
+    position: fixed;
+    top: -90px;               /* 화면 밖에서 시작 */
+    left: 50%;
+    transform: translateX(-50%) scale(0.5);
+    width: 140px;
+    height: 70px;             /* 반원 높이 */
+    background: radial-gradient(circle at 50% 100%, #7dd3fc, #7ee7b8);
+    border-radius: 140px 140px 0 0; /* 위쪽 잘린 반원 */
+    opacity: 0;
+    pointer-events: none;
+    z-index: 9999;
+    filter: drop-shadow(0 10px 20px rgba(60,160,200,0.25));
+  }
+  .download-effect::after{
+    /* 안쪽 ‘다운로드’ 아이콘 느낌의 V자/화살표 */
+    content:"";
+    position:absolute; left:50%; top:38%;
+    width:28px; height:28px;
+    transform: translate(-50%,-50%) rotate(45deg);
+    border-right:4px solid rgba(7,16,37,0.8);
+    border-bottom:4px solid rgba(7,16,37,0.8);
+    border-radius:3px;
+  }
+
+  @keyframes popDown {
+    0%   { top: -90px; opacity: 0; transform: translateX(-50%) scale(0.6); }
+    25%  { top: 16px;  opacity: 1; transform: translateX(-50%) scale(1); }
+    55%  { top: 16px;  opacity: 1; transform: translateX(-50%) scale(1.08); }
+    100% { top: -90px; opacity: 0; transform: translateX(-50%) scale(0.4); }
+  }
+  .download-effect.active { animation: popDown 0.9s cubic-bezier(.2,.9,.3,1); }
+
+  /* 파티클(작은 점) */
+  .burst-dot{
+    position: fixed;
+    top: 24px; left: 50%;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #7dd3fc;
+    opacity: 0.95;
+    pointer-events: none; z-index: 9998;
+    animation: dotFly 700ms ease-out forwards;
+  }
+  @keyframes dotFly{
+    0%{ transform: translate(-50%,0) scale(1); opacity:1; }
+    100%{ transform: translate(var(--dx), var(--dy)) scale(0.2); opacity:0; }
+  }
 </style>
 </head>
 <body>
@@ -74,9 +121,10 @@
 
     <div class="card">
       <h2>다운로드</h2>
-      <a class="download-btn" id="dl-win" href="https://github.com/Nothingbutauser/host/releases/download/resourcepack-installerV1.1/ResourcePackInstallerV1.1.exe" download>
-        Windows 설치 프로그램 다운로드 (.exe)
-      </a>
+      <a class="download-btn" id="dl-win"
+         href="https://github.com/Nothingbutauser/host/releases/download/resourcepack-installerV1.1/ResourcePackInstallerV1.1.exe"
+         download
+         >Windows 설치 프로그램 다운로드 (.exe)</a>
       <div style="margin-top:12px;color:var(--muted);">
         SHA256 체크섬: <code id="sha-win">확인 필요</code>
       </div>
@@ -97,14 +145,17 @@
     </footer>
   </div>
 
+  <!-- 상단 반원 이펙트 엘리먼트 -->
+  <div class="download-effect" id="download-effect" aria-hidden="true"></div>
+
 <script>
+  // === SHA256 계산 ===
   async function sha256OfFile(file){
     const buf = await file.arrayBuffer();
     const hashBuffer = await crypto.subtle.digest('SHA-256', buf);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
     return hashArray.map(b => b.toString(16).padStart(2,'0')).join('');
   }
-
   document.getElementById('verify').addEventListener('click', async () => {
     const input = document.getElementById('file');
     const res = document.getElementById('result');
@@ -122,6 +173,56 @@
       console.error(e);
       res.textContent = '해시 계산 중 오류가 발생했습니다.';
     }
+  });
+
+  // === 다운로드 상단 반원 이펙트 ===
+  const dlBtn = document.getElementById("dl-win");
+  const effect = document.getElementById("download-effect");
+
+  function playBurst(){
+    // 반원 본체
+    effect.classList.remove("active");
+    void effect.offsetWidth;          // reflow to restart animation
+    effect.classList.add("active");
+
+    // 파티클 몇 개 생성
+    const DOTS = 8;
+    for(let i=0;i<DOTS;i++){
+      const dot = document.createElement('div');
+      dot.className = 'burst-dot';
+      // 무작위 방향/거리
+      const angle = (Math.PI * 2) * (i / DOTS) + (Math.random()*0.6 - 0.3);
+      const dist  = 140 + Math.random()*80;
+      const dx = Math.cos(angle) * dist + 'px';
+      const dy = Math.sin(angle) * dist + 'px';
+      dot.style.setProperty('--dx', dx);
+      dot.style.setProperty('--dy', dy);
+      // 색 조금씩 바꾸기
+      dot.style.background = i % 2 ? '#7ee7b8' : '#7dd3fc';
+      document.body.appendChild(dot);
+      // 끝나면 제거
+      dot.addEventListener('animationend', ()=> dot.remove());
+    }
+  }
+
+  dlBtn.addEventListener("click", (e) => {
+    // 새 탭/중클릭은 기본 동작 유지
+    if (e.button === 1 || e.ctrlKey || e.metaKey) return;
+
+    e.preventDefault();           // 이펙트 먼저
+    playBurst();
+
+    // 650ms 후 실제 다운로드 이동 (효과가 보이도록 약간 지연)
+    const href = dlBtn.getAttribute('href');
+    setTimeout(()=> {
+      // a[download] 특성도 있지만, GitHub 릴리스 특성상 이동이 필요할 수 있음
+      window.location.href = href;
+    }, 650);
+  });
+
+  // 포커스 스타일 깔끔하게
+  document.querySelectorAll('a.download-btn, button').forEach(el => {
+    el.addEventListener('mouseup', ()=> el.blur());
   });
 </script>
 </body>
